@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=settings
+Exec=io.github.tduarte.Settings
+Icon=io.github.tduarte.Settings
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

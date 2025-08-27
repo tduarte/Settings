@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/io.github.tduarte.Settings.desktop.in
+data/io.github.tduarte.Settings.metainfo.xml.in
+data/io.github.tduarte.Settings.gschema.xml
+src/main.js
+src/window.js
+src/window.ui
