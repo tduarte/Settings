@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="settings">
-	<schema id="io.github.tduarte.Settings" path="/io/github/tduarte/Settings/">
-	</schema>
+  <schema id="io.github.tduarte.Settings" path="/io/github/tduarte/Settings/">
+    <key name="launch-at-login" type="b">
+      <default>false</default>
+      <summary>Launch at login</summary>
+      <description>Start the app automatically on session start.</description>
+    </key>
+    <key name="show-notifications" type="b">
+      <default>true</default>
+      <summary>Show notifications</summary>
+      <description>Allow the app to show notifications.</description>
+    </key>
+    <key name="color-scheme" type="s">
+      <default>'system'</default>
+      <summary>Color scheme</summary>
+      <description>Preferred color scheme: system, light, or dark.</description>
+    </key>
+    <key name="enable-networking" type="b">
+      <default>true</default>
+      <summary>Enable networking</summary>
+      <description>Allow networking features.</description>
+    </key>
+  </schema>
 </schemalist>

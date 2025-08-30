@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <object class="AdwPreferencesPage" id="root">
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Theme</property>
+        <child>
+          <object class="AdwComboRow" id="color_combo">
+            <property name="title" translatable="yes">Color scheme</property>
+            <property name="selected">0</property>
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item>Follow system</item>
+                  <item>Light</item>
+                  <item>Dark</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Placeholder</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Appearance page placeholder</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

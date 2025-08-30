@@ -19,16 +19,129 @@
  */
 
 import GObject from 'gi://GObject';
-import Gtk from 'gi://Gtk';
-import Adw from 'gi://Adw';
+import Gtk from 'gi://Gtk?version=4.0';
+import Adw from 'gi://Adw?version=1';
+import Gio from 'gi://Gio';
 
 export const SettingsWindow = GObject.registerClass({
     GTypeName: 'SettingsWindow',
     Template: 'resource:///io/github/tduarte/Settings/window.ui',
-    InternalChildren: ['label'],
+    InternalChildren: ['stack', 'sidebar_list'],
 }, class SettingsWindow extends Adw.ApplicationWindow {
     constructor(application) {
         super({ application });
+
+        this._settings = new Gio.Settings({ schema_id: 'io.github.tduarte.Settings' });
+
+        // Load and add pages to the stack
+        this._addPage('/io/github/tduarte/Settings/pages/general.ui', 'general', 'General', builder => this._bindGeneral(builder));
+        this._addPage('/io/github/tduarte/Settings/pages/appearance.ui', 'appearance', 'Appearance', builder => this._bindAppearance(builder));
+        this._addPage('/io/github/tduarte/Settings/pages/keyboard.ui', 'keyboard', 'Keyboard');
+        this._addPage('/io/github/tduarte/Settings/pages/network.ui', 'network', 'Network', builder => this._bindNetwork(builder));
+        this._addPage('/io/github/tduarte/Settings/pages/about.ui', 'about', 'About');
+
+        // Populate the sidebar from stack pages
+        this._populateSidebar();
+        this._sidebar_list.connect('row-selected', (list, row) => {
+            if (row) this._stack.set_visible_child_name(row.get_name());
+        });
+        // Select first row
+        const first = this._sidebar_list.get_row_at_index(0);
+        if (first) {
+            this._sidebar_list.select_row(first);
+            this._stack.set_visible_child_name(first.get_name());
+        }
+
+        // Apply style on startup and watch for changes
+        this._applyStyleFromSettings();
+        this._settings.connect('changed::color-scheme', () => this._applyStyleFromSettings());
+    }
+
+
+    _addPage(resourcePath, name, title, binder) {
+        const builder = Gtk.Builder.new_from_resource(resourcePath);
+        const page = builder.get_object('root');
+        if (!page)
+            return;
+        if (typeof this._stack.add_titled === 'function')
+            this._stack.add_titled(page, name, title);
+        else {
+            // Fallback for older API: add via AdwViewStackPage wrapper if needed
+            this._stack.add(page);
+            // Try to set page name for child-name navigation
+            if (typeof page.set_name === 'function')
+                page.set_name(name);
+        }
+        if (typeof binder === 'function')
+            binder(builder);
+    }
+
+    _populateSidebar() {
+        // Clear existing rows using GTK4 child iteration
+        for (let row = this._sidebar_list.get_first_child(); row;) {
+            const next = row.get_next_sibling();
+            this._sidebar_list.remove(row);
+            row = next;
+        }
+        if (typeof this._stack.get_pages !== 'function')
+            return;
+        const pages = this._stack.get_pages();
+        const n = pages.get_n_items();
+        for (let i = 0; i < n; i++) {
+            const page = pages.get_item(i);
+            const title = page?.get_title?.() ?? '';
+            const name = page?.get_name?.() ?? '';
+            const row = new Gtk.ListBoxRow();
+            row.set_name(name);
+            const ar = new Adw.ActionRow({ title });
+            ar.activatable = true;
+            row.set_child(ar);
+            this._sidebar_list.append(row);
+        }
+    }
+
+    _bindGeneral(builder) {
+        const launch = builder.get_object('launch_switch');
+        const notif = builder.get_object('notif_switch');
+        if (launch)
+            this._settings.bind('launch-at-login', launch, 'active', Gio.SettingsBindFlags.DEFAULT);
+        if (notif)
+            this._settings.bind('show-notifications', notif, 'active', Gio.SettingsBindFlags.DEFAULT);
+    }
+
+    _bindNetwork(builder) {
+        const net = builder.get_object('network_switch');
+        if (net)
+            this._settings.bind('enable-networking', net, 'active', Gio.SettingsBindFlags.DEFAULT);
+    }
+
+    _bindAppearance(builder) {
+        const combo = builder.get_object('color_combo');
+        if (!combo)
+            return;
+        const applyFromSettings = () => {
+            const val = this._settings.get_string('color-scheme');
+            const idx = ({ system: 0, light: 1, dark: 2 })[val] ?? 0;
+            combo.set_selected(idx);
+        };
+        const applyToSettings = () => {
+            const idx = combo.get_selected();
+            const val = ['system', 'light', 'dark'][idx] ?? 'system';
+            this._settings.set_string('color-scheme', val);
+            this._applyStyleFromSettings();
+        };
+        applyFromSettings();
+        combo.connect('notify::selected', applyToSettings);
+    }
+
+    _applyStyleFromSettings() {
+        const val = this._settings.get_string('color-scheme');
+        const sm = Adw.StyleManager.get_default();
+        const map = {
+            'system': Adw.ColorScheme.DEFAULT,
+            'light': Adw.ColorScheme.FORCE_LIGHT,
+            'dark': Adw.ColorScheme.FORCE_DARK,
+        };
+        sm.set_color_scheme(map[val] ?? Adw.ColorScheme.DEFAULT);
     }
 });
-

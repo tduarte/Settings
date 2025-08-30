@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <object class="AdwPreferencesPage" id="root">
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Shortcuts</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Customize shortcuts</property>
+            <property name="subtitle" translatable="yes">Open shortcuts settings</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Placeholder</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Keyboard page placeholder</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

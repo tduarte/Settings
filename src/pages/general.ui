@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <object class="AdwPreferencesPage" id="root">
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Behavior</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Launch at login</property>
+            <property name="subtitle" translatable="yes">Start automatically on session start</property>
+            <child type="suffix">
+              <object class="GtkSwitch" id="launch_switch"/>
+            </child>
+            <property name="activatable-widget">launch_switch</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Show notifications</property>
+            <child type="suffix">
+              <object class="GtkSwitch" id="notif_switch"/>
+            </child>
+            <property name="activatable-widget">notif_switch</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Placeholder</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">General page placeholder</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
