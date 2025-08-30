@@ -101,18 +101,18 @@ export const SettingsWindow = GObject.registerClass({
     }
 
     _bindGeneral(builder) {
-        const launch = builder.get_object('launch_switch');
-        const notif = builder.get_object('notif_switch');
-        if (launch)
-            this._settings.bind('launch-at-login', launch, 'active', Gio.SettingsBindFlags.DEFAULT);
-        if (notif)
-            this._settings.bind('show-notifications', notif, 'active', Gio.SettingsBindFlags.DEFAULT);
+        const launchRow = builder.get_object('launch_row');
+        const notifRow = builder.get_object('notif_row');
+        if (launchRow)
+            this._settings.bind('launch-at-login', launchRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        if (notifRow)
+            this._settings.bind('show-notifications', notifRow, 'active', Gio.SettingsBindFlags.DEFAULT);
     }
 
     _bindNetwork(builder) {
-        const net = builder.get_object('network_switch');
-        if (net)
-            this._settings.bind('enable-networking', net, 'active', Gio.SettingsBindFlags.DEFAULT);
+        const netRow = builder.get_object('network_row');
+        if (netRow)
+            this._settings.bind('enable-networking', netRow, 'active', Gio.SettingsBindFlags.DEFAULT);
     }
 
     _bindAppearance(builder) {

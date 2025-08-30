@@ -7,22 +7,16 @@
       <object class="AdwPreferencesGroup">
         <property name="title" translatable="yes">Behavior</property>
         <child>
-          <object class="AdwActionRow">
+          <object class="AdwSwitchRow" id="launch_row">
             <property name="title" translatable="yes">Launch at login</property>
             <property name="subtitle" translatable="yes">Start automatically on session start</property>
-            <child type="suffix">
-              <object class="GtkSwitch" id="launch_switch"/>
-            </child>
-            <property name="activatable-widget">launch_switch</property>
+            <property name="active">false</property>
           </object>
         </child>
         <child>
-          <object class="AdwActionRow">
+          <object class="AdwSwitchRow" id="notif_row">
             <property name="title" translatable="yes">Show notifications</property>
-            <child type="suffix">
-              <object class="GtkSwitch" id="notif_switch"/>
-            </child>
-            <property name="activatable-widget">notif_switch</property>
+            <property name="active">true</property>
           </object>
         </child>
       </object>

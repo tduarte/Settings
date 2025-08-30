@@ -7,12 +7,9 @@
       <object class="AdwPreferencesGroup">
         <property name="title" translatable="yes">Connectivity</property>
         <child>
-          <object class="AdwActionRow">
+          <object class="AdwSwitchRow" id="network_row">
             <property name="title" translatable="yes">Enable networking</property>
-            <child type="suffix">
-              <object class="GtkSwitch" id="network_switch"/>
-            </child>
-            <property name="activatable-widget">network_switch</property>
+            <property name="active">true</property>
           </object>
         </child>
       </object>
