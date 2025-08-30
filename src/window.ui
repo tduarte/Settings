@@ -6,6 +6,12 @@
     <property name="title" translatable="yes">Settings</property>
     <property name="default-width">1024</property>
     <property name="default-height">700</property>
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 500sp</condition>
+        <setter object="split_view" property="collapsed">True</setter>
+      </object>
+    </child>
     <property name="content">
       <object class="AdwToolbarView">
         <child type="top">
@@ -21,22 +27,32 @@
           </object>
         </child>
         <property name="content">
-          <object class="AdwOverlaySplitView">
+          <object class="AdwNavigationSplitView" id="split_view">
             <property name="vexpand">true</property>
             <property name="sidebar">
-              <object class="GtkScrolledWindow">
-                <property name="hscrollbar-policy">never</property>
-                <property name="vexpand">true</property>
-                <child>
-                  <object class="GtkListBox" id="sidebar_list">
-                    <property name="selection-mode">browse</property>
-                    <property name="activate-on-single-click">true</property>
+              <object class="AdwNavigationPage">
+                <property name="title" translatable="yes">Settings</property>
+                <property name="child">
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
+                    <property name="vexpand">true</property>
+                    <child>
+                      <object class="GtkListBox" id="sidebar_list">
+                        <property name="selection-mode">browse</property>
+                        <property name="activate-on-single-click">true</property>
+                      </object>
+                    </child>
                   </object>
-                </child>
+                </property>
               </object>
             </property>
             <property name="content">
-              <object class="AdwViewStack" id="stack"/>
+              <object class="AdwNavigationPage">
+                <property name="title" translatable="yes">Content</property>
+                <property name="child">
+                  <object class="AdwViewStack" id="stack"/>
+                </property>
+              </object>
             </property>
           </object>
         </property>

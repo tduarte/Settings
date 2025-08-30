@@ -26,7 +26,7 @@ import Gio from 'gi://Gio';
 export const SettingsWindow = GObject.registerClass({
     GTypeName: 'SettingsWindow',
     Template: 'resource:///io/github/tduarte/Settings/window.ui',
-    InternalChildren: ['stack', 'sidebar_list'],
+    InternalChildren: ['stack', 'sidebar_list', 'split_view'],
 }, class SettingsWindow extends Adw.ApplicationWindow {
     constructor(application) {
         super({ application });
@@ -43,13 +43,20 @@ export const SettingsWindow = GObject.registerClass({
         // Populate the sidebar from stack pages
         this._populateSidebar();
         this._sidebar_list.connect('row-selected', (list, row) => {
-            if (row) this._stack.set_visible_child_name(row.get_name());
+            if (!row)
+                return;
+            this._stack.set_visible_child_name(row.get_name());
+            // If collapsed, show content page
+            if (this._split_view?.set_show_content)
+                this._split_view.set_show_content(true);
         });
         // Select first row
         const first = this._sidebar_list.get_row_at_index(0);
         if (first) {
             this._sidebar_list.select_row(first);
             this._stack.set_visible_child_name(first.get_name());
+            if (this._split_view?.set_show_content)
+                this._split_view.set_show_content(true);
         }
 
         // Apply style on startup and watch for changes
